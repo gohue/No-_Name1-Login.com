@@ -1,0 +1,84 @@
+<?php
+// PHP-Funktion, damit über mehrere Seiten hinweg
+// eine Session/Sitzung ermöglicht wird.
+// Wir benötigen Sie auf allen unseren Seiten
+session_start();
+
+?>
+<html>
+   <head>
+     <title>Loginformular</title>
+     <link rel="stylesheet" href="login.css" type="text/css"></link>
+   </head>
+<body>
+
+<div class="container">
+  <img src="images/icon.jpg" class="icon">
+  <h1 class="h11">Login</h1>
+  <form action="inc/login-inc.php" method="POST">
+  <input type="text" name="user" placeholder="Benutzername">
+  <input type="password" name="password" placeholder="Passwort"><br>
+  <button type="submit" name="submit" class="button">Login</button>
+  </form>
+  <a class="" href="file:///C:/Users/No-_Name/Desktop/all%20coding/project1/No-_Name.html">Registrieren</a>
+</div>
+<script>
+
+  function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    console.log('statusChangeCallback');
+    console.log(response);                   // The current login status of the person.
+    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+      testAPI();  
+    } else {                                 // Not logged into your webpage or we are unable to tell.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this webpage.';
+    }
+  }
+
+
+  function checkLoginState() {               // Called when a person is finished with the Login Button.
+    FB.getLoginStatus(function(response) {   // See the onlogin handler
+      statusChangeCallback(response);
+    });
+  }
+
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{app-id}',
+      cookie     : true,                     // Enable cookies to allow the server to access the session.
+      xfbml      : true,                     // Parse social plugins on this webpage.
+      version    : '{api-version}'           // Use this Graph API version for this call.
+    });
+
+
+    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+      statusChangeCallback(response);        // Returns the login status.
+    });
+  };
+ 
+  function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      document.getElementById('status').innerHTML =
+        'Thanks for logging in, ' + response.name + '!';
+    });
+  }
+
+</script>
+
+
+<!-- The JS SDK Login Button -->
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+
+<div id="status">
+</div>
+
+<!-- Load the JS SDK asynchronously -->
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
